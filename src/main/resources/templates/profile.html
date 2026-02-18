@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Profile — SAML SSO</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f0f4f8;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 32px;
+        }
+
+        header h1 {
+            font-size: 22px;
+            color: #1a1a2e;
+            font-weight: 700;
+        }
+
+        .badge {
+            background: #e6f4ea;
+            color: #1e7e34;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 24px;
+        }
+
+        .card h2 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0078d4;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        .avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0078d4, #106ebe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .name {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+
+        .sub {
+            color: #777;
+            font-size: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        tr:not(:last-child) td {
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        td {
+            padding: 10px 0;
+            font-size: 14px;
+            vertical-align: top;
+        }
+
+        td:first-child {
+            color: #555;
+            font-weight: 600;
+            width: 45%;
+            word-break: break-all;
+        }
+
+        td:last-child {
+            color: #1a1a2e;
+            word-break: break-all;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .btn-primary {
+            background: #0078d4;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #106ebe;
+        }
+
+        .btn-outline {
+            background: white;
+            color: #0078d4;
+            border: 2px solid #0078d4;
+        }
+
+        .btn-outline:hover {
+            background: #e8f0fe;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🔐 SAML SSO Demo</h1>
+            <span class="badge">✓ Authenticated via Azure AD</span>
+        </header>
+
+        <!-- User summary card -->
+        <div class="card">
+            <h2>Authenticated User</h2>
+            <div class="avatar" th:text="${#strings.toUpperCase(#strings.substring(name, 0, 1))}">U</div>
+            <div class="name" th:text="${name}">User Name</div>
+            <div class="sub">Authenticated via SAML 2.0 · Azure Active Directory</div>
+        </div>
+
+        <!-- SAML Attributes card -->
+        <div class="card">
+            <h2>SAML Attributes</h2>
+            <table>
+                <tr th:each="entry : ${attributes}">
+                    <td th:text="${entry.key}"></td>
+                    <td th:text="${entry.value}"></td>
+                </tr>
+                <tr th:if="${#maps.isEmpty(attributes)}">
+                    <td colspan="2" style="color:#999; font-style:italic;">No additional attributes returned by Azure
+                        AD.</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions">
+            <a class="btn btn-outline" th:href="@{/}">← Home</a>
+            <form th:action="@{/logout}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button type="submit" class="btn btn-primary">Sign Out</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

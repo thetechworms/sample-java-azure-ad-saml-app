@@ -1,0 +1,23 @@
+server:
+  port: 8080
+
+spring:
+  thymeleaf:
+    cache: false
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SAML2 / Azure AD Configuration
+# Fill in the values from your Azure AD Enterprise Application SAML setup.
+# ─────────────────────────────────────────────────────────────────────────────
+saml2:
+  azure:
+    # Entity ID: must match the "Identifier (Entity ID)" you set in Azure AD.
+    # Can be any unique URI — commonly your app's base URL or a custom URN.
+    # Example: https://myapp.example.com  or  urn:mycompany:myapp
+    entity-id: "https://sts.windows.net/<tenant-id>"
+
+    # App Federation Metadata URL from Azure AD.
+    # In Azure Portal → Enterprise Applications → your app → Single sign-on → SAML
+    # Copy the "App Federation Metadata URL" field.
+    # Example: https://login.microsoftonline.com/{tenant-id}/federationmetadata/2007-06/federationmetadata.xml?appid={app-id}
+    metadata-uri: "https://login.microsoftonline.com/<tenant-id>/federationmetadata/2007-06/federationmetadata.xml?appid=<app-id>"
