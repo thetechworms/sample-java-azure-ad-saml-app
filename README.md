@@ -112,3 +112,4 @@ src/main/resources/
 
 **User not assigned to the application**
 → In Azure AD, go to Enterprise Applications → your app → Users and groups → assign the user
+
